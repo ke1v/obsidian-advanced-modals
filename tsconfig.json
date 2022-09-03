@@ -1,23 +1,26 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "types": ["svelte", "node"],
+    "baseUrl": "./src",
     "inlineSourceMap": true,
     "inlineSources": true,
     "module": "ESNext",
     "target": "ES6",
-    "allowJs": true,
+    "allowJs": false,
     "noImplicitAny": true,
     "moduleResolution": "node",
     "importHelpers": true,
     "isolatedModules": true,
-	"strictNullChecks": true,
-    "lib": [
-      "DOM",
-      "ES5",
-      "ES6",
-      "ES7"
-    ]
-  },
+    "preserveValueImports": true,
+    "importsNotUsedAsValues": "error",
+    "strictNullChecks": true,
+      "lib": [
+        "DOM",
+        "ES5",
+        "ES6",
+        "ES7"
+      ]
+    },
   "include": [
     "**/*.ts"
   ]
