@@ -21,6 +21,10 @@ export default class Workflow {
 		this.config = config;
 	}
 
+	public getName(): string {
+		return this.config.name;
+	}
+
 	public open() {
 		this.modal.open();
 	}

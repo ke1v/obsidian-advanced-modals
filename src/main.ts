@@ -1,8 +1,10 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, FuzzySuggestModal, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import WorkflowsSettingsTab from './ui/SettingsTab';
 import PromptModal from 'ui/PromptModal';
 import Workflow from 'Workflow';
 import type WorkflowConfiguration from 'WorkflowConfiguration';
+import SelectWorkflowModal from 'ui/SelectWorkflowModal';
+import { loadScripts, executeScript } from 'store/store';
 
 export interface WorkflowsSettings {
 	workflows: {
@@ -19,18 +21,15 @@ export default class WorkflowsPlugin extends Plugin {
 	private settings: WorkflowsSettings;
 
 	public async onload() {
+		// Init. vars
 		await this.loadSettings();
+		loadScripts(this.app);
+
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'WF: Open test modal',
+			id: 'open-workflows-menu',
+			name: 'Open Workflow Menu',
 			callback: () => {
-				new Workflow(this.app, {
-					name: "test",
-					script: "N/A",
-					inputs: ["first-one", "second-one"],
-				})
-				.open();
 			}
 		});
 		// This adds a settings tab so the user can configure various aspects of the plugin

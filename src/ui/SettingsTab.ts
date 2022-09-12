@@ -1,7 +1,5 @@
 import type WorkflowsPlugin from "../main";
 import { App, ButtonComponent, Component, ExtraButtonComponent, PluginSettingTab, Setting, TextComponent, ToggleComponent } from "obsidian";
-import Workflow from "Workflow";
-import type WorkflowConfiguration from "WorkflowConfiguration";
 import type { WorkflowsSettings } from "../main";
 import EditWorkflowMoal from "./EditWorkflow";
 
@@ -22,7 +20,7 @@ export default class WorkflowsSettingsTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-		this.containerEl.createEl("h2", { text: "Saved Workflows" });
+		containerEl.createEl("h2", { text: "Saved Workflows" });
 
 		new Setting(containerEl)
 			.setDesc(`
@@ -48,7 +46,7 @@ export default class WorkflowsSettingsTab extends PluginSettingTab {
 				})
 				.infoEl.addEventListener("click", (event: MouseEvent) => {
 					// EDIT WORKFLOW
-					new EditWorkflowMoal(this.app, this.settings.workflows[key])
+					new EditWorkflowMoal(this.app, this.settings.workflows, key, this.saveSettings)
 						.open();
 				});
 		}
@@ -77,8 +75,14 @@ export default class WorkflowsSettingsTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 					this.display();
 				});
-			})
+			});
+	}
 
+	// Arrow function to keep 'this' properties bound as it is used mainly as a passthrough
+	public saveSettings = async (): Promise<void> => {
+		await this.plugin.saveSettings();
+		this.display();
+		return Promise.resolve();
 	}
 
 }

@@ -17,6 +17,5 @@
 		<Input identifier={id} />
 	{/each}
 
-	<input type="submit" value="Submit">
-
+	<button class="mod-cta">Submit</button>
 </form>
