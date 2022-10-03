@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-workflows",
+	"name": "obsidian-advanced-modals",
 	"version": "0.1.1",
-	"description": "Customize workflows in Obsidian with Javascript",
+	"description": "Customize modals and what they do in Obsidian",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

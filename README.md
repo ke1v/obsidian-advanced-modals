@@ -1,6 +1,6 @@
-# Obsidian Workflows
+# Advanced Modals
 
-Create your own workflows through custom modals and prompts, and process those inputs using Javascript functions.
+Create your own custom modals and prompts, and process those inputs using Javascript functions.
 
 ## How to use
 Coming soon

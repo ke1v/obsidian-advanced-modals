@@ -1,9 +1,9 @@
 {
-	"id": "obsidian-workflows",
-	"name": "Workflows",
+	"id": "obsidian-advanced-modals",
+	"name": "Advanced Modals",
 	"version": "0.1.1",
 	"minAppVersion": "0.15.0",
-	"description": "Customize workflows in Obsidian with Javascript",
+	"description": "Customize modals and what they do in Obsidian",
 	"author": "Ke1v",
 	"authorUrl": "https://github.com/ke1v",
 	"isDesktopOnly": false

@@ -14,8 +14,9 @@
 
 <form on:submit|preventDefault={submitForm}>
 	{#each identifiers as id}
-		<Input identifier={id} />
+		<div class="">
+			<Input identifier={id} />
+		</div>
 	{/each}
-
 	<button class="mod-cta">Submit</button>
 </form>

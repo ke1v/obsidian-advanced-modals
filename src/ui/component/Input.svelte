@@ -5,6 +5,12 @@
     export let defaultValue: string = "";
     export let placeholder: string = "";
 
-</script>
+    export let label: string = "";
 
-<input type="text" name={identifier} id={identifier} {placeholder} value={defaultValue}>
+</script>
+<div>
+    {#if label !== ""}
+        <label for={identifier}>{label}</label>
+    {/if}
+    <input type="text" name={identifier} id={identifier} {placeholder} value={defaultValue}>
+</div>
