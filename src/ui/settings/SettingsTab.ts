@@ -1,9 +1,7 @@
 import type AdvancedModalsPlugin from "../../main";
-import { App, ButtonComponent, Component, ExtraButtonComponent, PluginSettingTab, Setting, TextComponent, ToggleComponent } from "obsidian";
+import { App, ButtonComponent, Component, DropdownComponent, ExtraButtonComponent, PluginSettingTab, Setting, TextComponent, TFolder, ToggleComponent } from "obsidian";
 import EditModal from "./EditModal";
-import { createModal, deleteModal, getModals } from "store/settings";
-
-
+import { createModal, deleteModal, getModals, getTemplateFolder, saveSettings, setTemplateFolder } from "store/settings";
 
 export default class AdvancedModalsSettingsTab extends PluginSettingTab {
 	private plugin: AdvancedModalsPlugin;
@@ -20,14 +18,30 @@ export default class AdvancedModalsSettingsTab extends PluginSettingTab {
 
 		containerEl.createEl("h2", { text: "General Settings" });
 
+		new Setting(containerEl)
+			.setName("Template folder")
+			.setDesc("Folder that contains your template files")
+			.addDropdown((dropdown: DropdownComponent) => {
+				let list: Record<string, string> = {};
+				this.app.vault.getAllLoadedFiles().filter(t => t instanceof TFolder).forEach(f => list[f.path] = f.path);
+				dropdown.addOptions(list);
+				dropdown.setValue(getTemplateFolder() || "/");
+				dropdown.onChange(async (value: string) => {
+					const folder = this.app.vault.getAbstractFileByPath(value);
+					if (folder instanceof TFolder) {
+						await setTemplateFolder(folder.path);
+					} else {
+						console.log(`${folder?.path} is not a TFolder!`);
+					}
+				});
+			});
+
 		containerEl.createEl("h2", { text: "Custom Modals" });
 
 		new Setting(containerEl)
-			.setDesc(`
-				This is where the desc is;
-			`);
+			.setDesc("Create your own modals to be triggered by hotkey or via the command palette. Modals can output to the active file, a file in the vault, or create a new file using a template. Using Javascript, you can modify the inputs or the files themselves as an output.");
 
-		for (const [index, modal] of getModals().entries()) {
+		for (const modal of getModals().values()) {
 			new Setting(containerEl)
 				.setName(modal.name)
 				.setTooltip("Click to edit")
@@ -39,7 +53,7 @@ export default class AdvancedModalsSettingsTab extends PluginSettingTab {
 					// HOTKEY
 					button.setIcon("any-key");
 					button.onClick(async () => {
-
+						
 					});
 				})
 				.addExtraButton((button: ExtraButtonComponent) => {

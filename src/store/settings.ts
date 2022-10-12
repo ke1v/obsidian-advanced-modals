@@ -1,11 +1,14 @@
 import type AdvancedModalSettings from "AdvancedModalSettings";
+import type { TFolder } from "obsidian";
 
 export interface AdvancedModalsPluginSettings {
 	modalSettings: AdvancedModalSettings[];
+	templateFolder: string;
 }
 
 const DEFAULT_SETTINGS: Partial<AdvancedModalsPluginSettings> = {
 	modalSettings: [],
+	templateFolder: "/",
 }
 
 let settings: AdvancedModalsPluginSettings;
@@ -73,5 +76,14 @@ export async function deleteModal(name: string): Promise<void> {
 	const index = settings.modalSettings.findIndex(modal => modal.name === name);
 	delete settings.modalSettings[index];
 
+	await saveSettings();
+}
+
+export function getTemplateFolder(): string {
+	return settings.templateFolder;
+}
+
+export async function setTemplateFolder(folder: string): Promise<void> {
+	settings.templateFolder = folder;
 	await saveSettings();
 }
