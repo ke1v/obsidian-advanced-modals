@@ -1,6 +1,6 @@
 import { AppendToFile } from "helpers/FileHelpers";
 import { App, Modal } from "obsidian";
-import type AdvancedModalSettings from "../AdvancedModalSettings"; 
+import type { AdvancedModalSettings } from "../AdvancedModalSettings"; 
 import Form from "./component/Form.svelte";
 
 type Script = (text: string) => Promise<string>;
@@ -16,7 +16,7 @@ export default class AdvancedModal extends Modal {
 		this.config = config;
 		
 		this.onSubmit = (data: FormData): string => {
-			if (this.config.next !== null) {
+			if (this.config.file !== null) {
 				
 				data.forEach(v => AppendToFile(this.app.vault, "supnote.md", v.toString(), false));
 			}

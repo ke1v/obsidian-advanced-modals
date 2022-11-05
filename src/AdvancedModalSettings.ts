@@ -1,8 +1,14 @@
-import type AdvancedModal from "ui/AdvancedModal";
+export const ModalOutputModes = [
+	"Template File",
+	"Append to File",
+	"Output on Cursor",
+] as const;
 
-export default interface AdvancedModalSettings {
+export type ModalOutputMode = typeof ModalOutputModes[number]
+
+export interface AdvancedModalSettings {
 	name: string;
 	inputs: string[];
-	next: AdvancedModal | (() => string) | null;
+	outputMode: ModalOutputMode;
 	file: string | null;
 }

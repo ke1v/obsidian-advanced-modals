@@ -1,8 +1,9 @@
 import type AdvancedModalsPlugin from "main";
-import { App, ButtonComponent, ExtraButtonComponent, Modal, Notice, Setting, TextComponent } from "obsidian";
-import type AdvancedModalSettings from "AdvancedModalSettings";
+import { App, ButtonComponent, DropdownComponent, ExtraButtonComponent, Modal, Notice, Setting, TextAreaComponent, TextComponent } from "obsidian";
 import type AdvancedModal from "ui/AdvancedModal";
 import { changeModal } from "store/settings";
+import type { AdvancedModalSettings } from "AdvancedModalSettings";
+import SvltEditModal from "ui/component/EditModal.svelte";
 
 export default class EditModal extends Modal {
 
@@ -11,8 +12,9 @@ export default class EditModal extends Modal {
 	private refreshParent: () => void;
 
 	public constructor(
-		app: App, 
+		app: App,
 		modal: AdvancedModalSettings,
+
 		refresh: () => void,
 	) {
 		super(app);
@@ -25,70 +27,87 @@ export default class EditModal extends Modal {
 		let { contentEl } = this;
 		contentEl.empty();
 
-		contentEl.createEl("h2", { text: "Edit Modal" });
-
-		// MODAL NAME
-		new Setting(contentEl)
-			.setName("Modal Name")
-			.addText((text: TextComponent) => {
-				text.setValue(this.edited.name);
-				text.onChange((value: string) => {
-					this.edited.name = value;
-				});
-			});
-
-		for (const [i, input] of this.edited.inputs.entries()) {
-			new Setting(contentEl)
-				.addText((text: TextComponent) => {
-					text.setValue(input);
-					text.onChange((value: string) => {
-						this.edited.inputs[i] = value;
-					})
-				})
-				.addExtraButton((button: ExtraButtonComponent) => {
-					button.setIcon("cross");
-					button.onClick(() => {
-						this.edited.inputs.splice(i, 1);
-						this.open();
-					});
-				});
-		}
-
-		// ADD INPUT
-		new Setting(contentEl)
-			.addButton((button: ButtonComponent) => {
-				button.setCta();
-				button.setButtonText("Add New Input");
-				button.onClick((evt: MouseEvent) => {
-					this.edited.inputs.push("new-input");
-					this.open();
-				});
-			});
-
-		// SAVE SETTINGS
-		new Setting(contentEl)
-			.addButton((button: ButtonComponent) => {
-				button.setCta();
-				button.setButtonText("Save");
-				button.onClick(async (evt: MouseEvent) => {
-					await this.submitAction();
-				});
-			})
-		// CANCEL SETTINGS
-			.addButton((button: ButtonComponent) => {
-				button.setButtonText("Cancel");
-				button.onClick((evt: MouseEvent) => {
-					this.close();
-				})
-			});
-
-		// PRESSING ENTER
-		contentEl.addEventListener("keypress", async (event: KeyboardEvent) => {
-			if (event.key === "Enter") {
-				event.preventDefault();
-				await this.submitAction();
+		const edit = new SvltEditModal({
+			target: contentEl,
+			props: {
+				edited: this.edited,
 			}
-		})
+		});
+
+
+
+		// this.titleEl.textContent = "Edit Modal";
+		
+		// contentEl.createDiv();
+
+		// // MODAL NAME
+		// new Setting(contentEl)
+		// 	.setName("Modal Name")
+		// 	.addText((text: TextComponent) => {
+		// 		text.setValue(this.edited.name);
+		// 		text.onChange((value: string) => {
+		// 			this.edited.name = value;
+		// 		});
+		// 	});
+
+		// // MODAL OUTPUT
+		// new Setting(contentEl)
+		// 	.setName("Output Mode")
+		// 	.addDropdown((dropdown: DropdownComponent) => {
+		// 		const record: Record<string, string> = {};
+		// 		ModalOutputModes.forEach(mode => record[mode] = mode);
+		// 		dropdown.addOptions(record);
+		// 		dropdown.setValue(this.edited.outputMode);
+		// 		dropdown.onChange((value: string) => {
+		// 			this.edited.outputMode = value as ModalOutputMode;
+		// 			this.open();
+		// 		});
+		// 	});
+
+		// if (this.edited.outputMode === "Append to File" || this.edited.outputMode === "Output on Cursor") {
+		// 	const outputFormatSetting = contentEl.createDiv("output-format-setting");
+		// 	outputFormatSetting.createEl("p", { text: "Output Format", cls: "" });
+		// 	outputFormatSetting.createEl("p", { text: "Set a template you want the modal to output", cls: "setting-item-description" });
+		// 	outputFormatSetting.createEl("textarea");
+		// }
+
+				
+
+		// // ADD INPUT
+		// new Setting(contentEl)
+		// 	.addButton((button: ButtonComponent) => {
+		// 		button.setCta();
+		// 		button.setButtonText("Add New Input");
+		// 		button.onClick((evt: MouseEvent) => {
+		// 			this.edited.inputs.push("new-input");
+		// 			this.open();
+		// 		});
+		// 	});
+
+		// // SAVE SETTINGS
+		// new Setting(contentEl)
+		// 	.addButton((button: ButtonComponent) => {
+		// 		button.setCta();
+		// 		button.setButtonText("Save");
+		// 		button.onClick(async (evt: MouseEvent) => {
+		// 			await this.submitAction();
+		// 		});
+		// 	})
+		// // CANCEL SETTINGS
+		// 	.addButton((button: ButtonComponent) => {
+		// 		button.setButtonText("Cancel");
+		// 		button.onClick((evt: MouseEvent) => {
+		// 			this.close();
+		// 		})
+		// 	});
+
+		// // PRESSING ENTER
+		// contentEl.addEventListener("keypress", async (event: KeyboardEvent) => {
+		// 	if (event.key === "Enter") {
+		// 		event.preventDefault();
+		// 		await this.submitAction();
+		// 	}
+		// })
 	}
 
 	public onClose(): void {

@@ -2,6 +2,7 @@ import type AdvancedModalsPlugin from "../../main";
 import { App, ButtonComponent, Component, DropdownComponent, ExtraButtonComponent, PluginSettingTab, Setting, TextComponent, TFolder, ToggleComponent } from "obsidian";
 import EditModal from "./EditModal";
 import { createModal, deleteModal, getModals, getTemplateFolder, saveSettings, setTemplateFolder } from "store/settings";
+import Edit from "./../component/EditModal.svelte";
 
 export default class AdvancedModalsSettingsTab extends PluginSettingTab {
 	private plugin: AdvancedModalsPlugin;
@@ -42,6 +43,9 @@ export default class AdvancedModalsSettingsTab extends PluginSettingTab {
 			.setDesc("Create your own modals to be triggered by hotkey or via the command palette. Modals can output to the active file, a file in the vault, or create a new file using a template. Using Javascript, you can modify the inputs or the files themselves as an output.");
 
 		for (const modal of getModals().values()) {
+			if (modal === null) {
+				continue;
+			}
 			new Setting(containerEl)
 				.setName(modal.name)
 				.setTooltip("Click to edit")

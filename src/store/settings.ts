@@ -1,4 +1,4 @@
-import type AdvancedModalSettings from "AdvancedModalSettings";
+import type { AdvancedModalSettings } from "AdvancedModalSettings";
 import type { TFolder } from "obsidian";
 
 export interface AdvancedModalsPluginSettings {
@@ -63,8 +63,8 @@ export async function createModal(modal?: AdvancedModalSettings): Promise<void> 
 		modal = {
 			name,
 			inputs: [],
-			next: null,
 			file: null,
+			outputMode: "Output on Cursor"
 		}
 	}
 
@@ -74,8 +74,7 @@ export async function createModal(modal?: AdvancedModalSettings): Promise<void> 
 
 export async function deleteModal(name: string): Promise<void> {
 	const index = settings.modalSettings.findIndex(modal => modal.name === name);
-	delete settings.modalSettings[index];
-
+	settings.modalSettings.splice(index, 1);
 	await saveSettings();
 }
 

@@ -1,0 +1,8 @@
+.output-format-setting {
+	border-top: 1px solid var(--background-modifier-border);
+	padding: 18px 0;
+}
+
+.output-format-setting > textarea {
+	width: 100%;
+}
